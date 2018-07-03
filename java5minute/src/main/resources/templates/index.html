@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <img th:src="${song.albumImg}"/>
+
+    <h1 th:text="${song.name}"></h1>
+
+    <h3>
+        <label>歌手：</label><span th:text="${song.singer}"></span>
+    </h3>
+    <h3>
+        <label>所属专辑：</label><span th:text="${song.albumName}"></span>
+    </h3>
+
+    <h3>
+        <label>评论数：</label><span th:text="${song.commentCount}"></span>
+    </h3>
+    <div th:utext="${song.lyrics}"></div>
+</body>
+</html>
