@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>精彩评论</h3>
+    <ul th:each="comment:${comments}">
+        <li>
+            <img th:src="${comment.icon}"/>
+            <span th:text="${comment.nickname}"></span>
+            <span th:text="${comment.content}"></span>
+        </li>
+        <li>
+            <label>评论时间：</label>
+            <span th:text="${comment.commentTime}"></span>
+            <label>点赞数：</label>
+            <span th:text="${comment.likeNum}"></span>
+        </li>
+    </ul>
+</body>
+</html>
