@@ -4,6 +4,16 @@ import java.util.Date;
 
 public class Comment {
 
+    private String id;    //评论的id
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String icon;  //评论人头像
 
     private  String nickname;    //昵称

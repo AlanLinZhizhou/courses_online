@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/jquery-3.3.1.min.js"></script>
 </head>
 <body>
     <h1>评论</h1>
@@ -25,8 +26,33 @@
             <label>评论时间：</label>
             <span th:text="${#dates.format(comment.commentTime,'yyyy-MM-dd HH:mm:ss')}"></span>
             <label>点赞数：</label>
-            <span th:text="${comment.likeNum}"></span>
+            <a href="#" th:data-id="${comment.id}" class="like-btn">
+            <span th:text="${comment.likeNum}"></span></a>
         </li>
     </ul>
+
+
+    <script>
+
+        $(function(){
+            $(".like-btn").on('click',function (e) {   //找到所有class为"like-btn的集合",然后执行.on函数，执行回调函数
+                e.preventDefault();                     //阻断浏览器的默认行为
+                var self=$(this);                     //得到当前超链接的Jquery对象
+                var commentId=self.data('id');
+                $.ajax({
+                    url:"/comment/like",
+                    method:"POST",
+                    data:{                             //请求参数
+                        songId:"35847388",
+                        commentId:commentId
+                    },
+                    cache:false                      //不让浏览器缓存该行为，直接提交
+                })
+                    .done(function (data) {          //当网络请求成功之后执行
+                        self.html(data.likeNum);      //JQuery提供的方法
+                    })
+            })
+        })
+    </script>
 </body>
 </html>
