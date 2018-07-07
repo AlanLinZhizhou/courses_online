@@ -1,5 +1,7 @@
 package com.qingguatang.java5minute.course4.model;
 
+import java.util.Date;
+
 public class Comment {
 
     private String icon;  //评论人头像
@@ -8,7 +10,7 @@ public class Comment {
 
     private  String content;    //评论内容
 
-    private String commentTime;  //评论时间
+        private Date commentTime;  //评论时间
 
     private int likeNum;       //点赞数
 
@@ -36,11 +38,11 @@ public class Comment {
         this.content = content;
     }
 
-    public String getCommentTime() {
+    public Date getCommentTime() {
         return commentTime;
     }
 
-    public void setCommentTime(String commentTime) {
+    public void setCommentTime(Date commentTime) {
         this.commentTime = commentTime;
     }
 
