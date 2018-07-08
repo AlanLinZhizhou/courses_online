@@ -1,39 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-    <img th:src="${song.albumImg}"/>
+    <img class="song-albumImg" th:src="${song.albumImg}"/>
 
-    <h1 th:text="${song.name}"></h1>
+    <h1 class="song-name" th:text="${song.name}"></h1>
 
 
-    <a href="#" class="play-btn">播放</a>
+    <a href="#" th:data-id="${song.id}" class="play-btn">播放</a>
     <audio id="player" style="display: none" src="" controls="controls"></audio>
     <h3>
-        <label>歌手：</label><span th:text="${song.singer}"></span>
+        <label>歌手：</label><span class="song-singer" th:text="${song.singer}"></span>
     </h3>
     <h3>
-        <label>所属专辑：</label><span th:text="${song.albumName}"></span>
+        <label>所属专辑：</label><span class="song-albumName" th:text="${song.albumName}"></span>
     </h3>
 
     <h3>
-        <label>评论数：</label><span th:text="${song.commentCount}"></span>
+        <label>评论数：</label><span class="song-commentCount" th:text="${song.commentCount}"></span>
     </h3>
+
+
+    <div th:utext="${song.lyrics}" class="song-lyrics"></div>
+    <h3>相似歌曲</h3>
+    <ul>
+        <li>
+            <a href="#" class="change-song" data-id="16435049">在阳光下失落的影子</a>
+            <a href="#" class="play-btn" data-id="16435049">播放</a>
+        </li>
+    </ul>
+
 
     <script>
         $(function () {
             $(".play-btn").on('click',function (e) {
                 e.preventDefault();
-
+                var songId=$(this).data("id");
                 $.ajax({
                     url:"song/music",
                     method:"GET",
                     data:{
-                        songId:"35847388"
+                        songId: songId
                     },
                     cache:false
                 })
@@ -42,9 +53,32 @@
                         $("#player").attr("src",data);
                         document.getElementById("player").play();
                     });
+            });
+
+            //处理切换歌曲
+            $(".change-song").on('click',function(e){
+                e.preventDefault();
+                var songId=$(this).data("id");
+                $.ajax({
+                    url:"/songinfo/get",
+                    method:"GET",
+                    data:{
+                        songId:songId
+                    },
+                    cache:false
+                })
+                    .done(function (data) {
+                        $('.song-albumImg').attr('src',data.albumImg);
+                        $('.song-albumName').html(data.alnumName);
+                        $('.song-commentCount').html(data.commentCount);
+                        $('.song-lyrics').html(data.lyrics);
+                        $('.song-name').html(data.name);
+                        $('.song-singer').html(data.singer);
+                    })
             })
+
+
         })
     </script>
-    <div th:utext="${song.lyrics}"></div>
 </body>
 </html>
