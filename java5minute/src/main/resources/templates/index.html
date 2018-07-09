@@ -9,7 +9,31 @@
     <img class="song-albumImg" th:src="${song.albumImg}"/>
 
     <h1 class="song-name" th:text="${song.name}"></h1>
+    <div th:utext="${song.lyrics}" class="song-lyrics"></div>
+    <h1>评论</h1>
+    <form action="/comment/post" method="post">
+        <input type="hidden" name="nickName" value="alan">
+        <input type="hidden" name="songId" value="35847388">
+        <input name="content" type="text" style="width:80%;height: 100px;" placeholder="填写你的评论">
+        <br/>
+        <button type="submit">评论</button>
+    </form>
 
+    <h3>精彩评论</h3>
+    <ul th:each="comment:${comments}">
+        <li>
+            <img th:src="${comment.icon}"/>
+            <span th:text="${comment.nickname}"></span>
+            <span th:text="${comment.content}"></span>
+        </li>
+        <li>
+            <label>评论时间：</label>
+            <span th:text="${#dates.format(comment.commentTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+            <label>点赞数：</label>
+            <a href="#" th:data-id="${comment.id}" class="like-btn">
+                <span th:text="${comment.likeNum}"></span></a>
+        </li>
+    </ul>
 
     <a href="#" th:data-id="${song.id}" class="play-btn">播放</a>
     <audio id="player" style="display: none" src="" controls="controls"></audio>
@@ -25,7 +49,7 @@
     </h3>
 
 
-    <div th:utext="${song.lyrics}" class="song-lyrics"></div>
+
     <h3>相似歌曲</h3>
     <ul>
         <li>
@@ -74,6 +98,23 @@
                         $('.song-lyrics').html(data.lyrics);
                         $('.song-name').html(data.name);
                         $('.song-singer').html(data.singer);
+                    })
+            })
+            $(".like-btn").on('click',function (e) {   //找到所有class为"like-btn的集合",然后执行.on函数，执行回调函数
+                e.preventDefault();                     //阻断浏览器的默认行为
+                var self=$(this);                     //得到当前超链接的Jquery对象
+                var commentId=self.data('id');
+                $.ajax({
+                    url:"/comment/like",
+                    method:"POST",
+                    data:{                             //请求参数
+                        songId:"35847388",
+                        commentId:commentId
+                    },
+                    cache:false                      //不让浏览器缓存该行为，直接提交
+                })
+                    .done(function (data) {          //当网络请求成功之后执行
+                        self.html(data.likeNum);      //JQuery提供的方法
                     })
             })
 

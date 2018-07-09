@@ -43,7 +43,7 @@ public class CommentPostControl {
             });
 
 
-         return "redirect:/comments";
+         return "redirect:/comments="+songId;
     }
 
     public List<Comment> getComments(String songId){
